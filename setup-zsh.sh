@@ -33,4 +33,11 @@ else
   echo "$PLUGINS" >> "$HOME/.zshrc"
 fi
 
+# 5. Make zsh the default login shell (skip if already default)
+ZSH_PATH="$(command -v zsh)"
+if [ "${SHELL:-}" != "$ZSH_PATH" ]; then
+  grep -qxF "$ZSH_PATH" /etc/shells || echo "$ZSH_PATH" | sudo tee -a /etc/shells >/dev/null
+  chsh -s "$ZSH_PATH"
+fi
+
 echo "Done. Run: exec zsh"
